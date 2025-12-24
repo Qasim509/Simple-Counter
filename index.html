@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Counter App</title>
+
+  <style>
+    body {
+      background-color: black;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: white;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+      gap: 20px;
+    }
+
+    nav button {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      background-color: white;
+    }
+
+    .all {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 50px;
+    }
+
+    #value {
+      font-size: 180px;
+      margin: 0;
+    }
+
+    #increse,
+    #decrese {
+      font-size: 60px;
+      background: none;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #increse:hover,
+    #decrese:hover {
+      color: #00ff00;
+    }
+
+   
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .box {
+      background: #111;
+      padding: 20px;
+      width: 300px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .box input,
+    .box select {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+    }
+
+    .box button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <button id="about">ℹ️</button>
+    <button id="settings">⚙️</button>
+    <button id="reset">🔄</button>
+  </nav>
+
+  <div class="all">
+    <button id="decrese">➖</button>
+    <p id="value">0</p>
+    <button id="increse">➕</button>
+  </div>
+
+  <div class="modal" id="settingsModal">
+    <div class="box">
+      <h3>Settings</h3>
+
+      <label>Limit</label>
+      <select id="limitToggle">
+        <option value="off">Off</option>
+        <option value="on">On</option>
+      </select>
+
+      <input type="number" id="maxLimit" placeholder="Max Value">
+
+      <label>Background Color</label>
+      <input type="color" id="bgColor">
+
+      <button id="saveSettings">Save</button>
+      <button onclick="closeSettings()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    let count = 0;
+    let limitOn = false;
+    let max = Infinity;
+
+    const value = document.getElementById("value");
+
+    document.getElementById("increse").onclick = () => {
+      if (!limitOn || count < max) {
+        count++;
+        value.innerText = count;
+      }
+    };
+
+    document.getElementById("decrese").onclick = () => {
+      count--;
+      value.innerText = count;
+    };
+
+    document.getElementById("reset").onclick = () => {
+      if (confirm("Reset Counter?")) {
+        count = 0;
+        value.innerText = count;
+      }
+    };
+
+    document.getElementById("about").onclick = () => {
+      alert("Simple Counter App\nHTML • CSS • JavaScript");
+    };
+
+    document.getElementById("settings").onclick = () => {
+      document.getElementById("settingsModal").style.display = "flex";
+    };
+
+    function closeSettings() {
+      document.getElementById("settingsModal").style.display = "none";
+    }
+
+    document.getElementById("saveSettings").onclick = () => {
+      limitOn = document.getElementById("limitToggle").value === "on";
+      max = Number(document.getElementById("maxLimit").value) || Infinity;
+
+      const bg = document.getElementById("bgColor").value;
+      document.body.style.backgroundColor = bg;
+
+      closeSettings();
+    };
+  </script>
+
+</body>
+</html>
